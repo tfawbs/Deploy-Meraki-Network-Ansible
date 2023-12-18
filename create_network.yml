@@ -1,0 +1,16 @@
+---
+#First we create the Network
+    - name: Create Network
+      cisco.meraki.networks:
+        state: present
+        organizationId: "{{ org_id }}"
+        name: "{{ site_name }}"
+        notes: "{{ site_name }}"
+        productTypes:           
+          - switch
+          - appliance
+          - wireless
+        timeZone: Australia/Sydney
+        tags: AUS-Branch
+      register: create_network
+#The registered results will be used in future tasks to identify this the network we are working with

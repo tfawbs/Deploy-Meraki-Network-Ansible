@@ -1,0 +1,46 @@
+---
+#This playbook creates standard SSIDs with variables sourced in prior tasks
+    - name: Create Corporate SSID
+      cisco.meraki.networks_wireless_ssids:
+        state: present
+        enabled: true
+        name: "{{ corp_name }}-Corp"
+        networkId: "{{ create_network.meraki_response.id }}"
+        number: 0
+        ipAssignmentMode: Bridge mode
+        defaultVlanId: 100
+        useVlanTagging: true
+        authMode: "8021x-radius"
+        wpaEncryptionMode: "WPA2 only"
+        radiusServers: 
+          - one:
+            host: "10.20.30.40"
+            port: 1812
+            secret: SuperSecretRADIUSPassword
+
+    - name: Create Mobile/PSK SSID
+      cisco.meraki.networks_wireless_ssids:
+        state: present
+        enabled: true
+        name: "{{corp_name}}-legacy"
+        networkId: "{{ create_network.meraki_response.id }}"
+        number: 1
+        ipAssignmentMode: Bridge mode
+        defaultVlanId: 200
+        useVlanTagging: true
+        authMode: psk
+        encryptionMode: wpa
+        psk: SuperSecretPreSharedKey
+
+    - name: Create Guest SSID
+      cisco.meraki.networks_wireless_ssids:
+        state: present
+        enabled: true
+        name: "{{corp_name}}-Guests"
+        networkId: "{{ create_network.meraki_response.id }}"
+        number: 2
+        ipAssignmentMode: Bridge mode
+        defaultVlanId: 300
+        useVlanTagging: true
+        authMode: "open"
+        splashPage: Click-through splash page

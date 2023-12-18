@@ -1,0 +1,56 @@
+---
+#Run this playbook to collect the variables required create your network and deploy devices
+#It will then run a series of playbooks to deploy the network based on what you provided
+- name: Create a Meraki Network
+  hosts: localhost
+  vars:
+    org_name: "Org Name" #Enter your Org Name here
+    org_id: 1245678 #Enter your Org ID here
+    corp_name: Company_Name #This is referenced when Creating SSIDs
+
+  vars_prompt:
+     - name: "site_name"
+       prompt: "Enter the name of the site"
+       private: no
+     - name: "site_nc"
+       prompt: "Enter the site naming conventions (example, MELB for MELB-MX01)"
+       private: no
+     - name: "mx_serial"
+       prompt: "Enter the serial number of your MX"
+       private: no
+     - name: "switch_serial"
+       prompt: "Enter the serial number of your Switch"
+       private: no
+     - name: "ap_serial"
+       prompt: "Enter the serial number of your AP"
+       private: no
+     - name: "mgmt_subnet"
+       prompt: "Enter the Management subnet (example, 192.168.1; leave off the last octect the last octect is hard coded)"
+       private: no
+       default: "192.168.1"
+     - name: "user_subnet"
+       prompt: "Enter the User subnet (example, 10.0.10; leave off the last octect the last octect is hard coded)"
+       private: no
+       default: "10.0.10"
+     - name: "print_subnet"
+       prompt: "Enter the Printer subnet (example, 10.0.20; leave off the last octect the last octect is hard coded)"
+       private: no
+       default: "10.0.20"
+     - name: "CorpWiFi_subnet"
+       prompt: "Enter the Corporate WiFi subnet (example, 10.0.30; leave off the last octect the last octect is hard coded)"
+       private: no
+       default: "10.0.30"
+
+  tasks:
+    - name: Create the Network
+      include_tasks: create_network.yml
+    - name: Claim the Devices
+      include_tasks: claim_devices.yml
+    - name: Configure the SSIDs
+      include_tasks: configure_ssid.yml
+    - name: Configure the Standard Switch Switchports Layout
+      include_tasks: configure_switch_ports.yml
+    - name: Configure the MX VLANS
+      include_tasks: configure_vlans.yml
+    - name: Configure the MX Firewall Rules
+      include_tasks: configure_firewall.yml

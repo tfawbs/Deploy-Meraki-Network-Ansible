@@ -1,0 +1,29 @@
+---
+#Here we claim the device Serials prompted into registered results from the network created in create_network.yml
+    - name: Claiming Devices into the Network
+      cisco.meraki.networks_devices_claim:
+        meraki_output_log: true
+        networkId: "{{ create_network.meraki_response.id }}"
+        serials:
+        - "{{ mx_serial }}"
+        - "{{ switch_serial }}"
+        - "{{ ap_serial }}"
+
+#Now we update the naming convention of the claimed devices
+    - name: Update MX Name
+      cisco.meraki.devices:
+        state: present
+        serial: "{{ mx_serial }}"
+        name: "RW-{{ site_nc }}-01"
+
+    - name: Update Switch Name
+      cisco.meraki.devices:
+        state: present
+        serial: "{{ switch_serial }}"
+        name: "SW-{{ site_nc }}-01"
+
+    - name: Update AP Name
+      cisco.meraki.devices:
+        state: present
+        serial: "{{ ap_serial }}"
+        name: "{{ site_nc }}-AP01"
