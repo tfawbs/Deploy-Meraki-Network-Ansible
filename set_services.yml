@@ -1,0 +1,24 @@
+    - name: Set SNMP Server
+      cisco.meraki.networks_snmp:
+        networkId: "{{ create_network.meraki_response.id }}"
+        access: users
+        users:
+        - username: Solarwinds
+          passphrase: <removed>
+        - username: Node1
+          passphrase: secret
+    - name: Set SYSLOG Server
+      cisco.meraki.networks_syslog_servers:
+        networkId: "{{ create_network.meraki_response.id }}"
+        servers:
+        - host: 192.168.20.25
+          port: 514
+          roles: #These have to be present for the target network, i.e. if there are no switches in the network it will error if you use role "switch event log"
+          - Flows
+          - URLs
+          - Wireless event log
+        - host: 20.33.44.2
+          port: 443
+          roles: 
+          - Flows
+          - Wireless event log

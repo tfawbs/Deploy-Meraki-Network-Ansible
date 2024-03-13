@@ -54,3 +54,5 @@
       include_tasks: configure_vlans.yml
     - name: Configure the MX Firewall Rules
       include_tasks: configure_firewall.yml
+    - name: Set Services like SNMP and Syslog
+      include_tasks: set_services.yml
