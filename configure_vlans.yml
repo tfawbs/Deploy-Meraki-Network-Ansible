@@ -11,7 +11,6 @@
       cisco.meraki.networks_appliance_vlans:
         state: present
         id: '1'
-        vlanId: 1
         applianceIp: "{{ mgmt_subnet }}.1"
         cidr: "{{ mgmt_subnet }}.0/24"
         name: Management
@@ -22,7 +21,6 @@
       cisco.meraki.networks_appliance_vlans:
         state: present
         id: '10'
-        vlanId: 10
         applianceIp: "{{ user_subnet }}.1"
         cidr: "{{ user_subnet }}.0/24"
         name: Users
@@ -32,7 +30,6 @@
     - name: Create Printer Subnet
       cisco.meraki.networks_appliance_vlans:
         state: present
-        vlanId: 20
         id: '20'
         applianceIp: "{{ print_subnet }}.1"
         cidr: "{{ print_subnet }}.0/24"
@@ -46,7 +43,6 @@
         applianceIp: "{{ CorpWiFi_subnet }}.1"
         cidr: "{{ CorpWiFi_subnet }}.0/24"
         id: '100'
-        vlanId: 100
         name: Corp WiFi
         networkId: "{{ create_network.meraki_response.id }}"
         subnet: "{{ CorpWiFi_subnet }}.0/24"
@@ -57,7 +53,6 @@
         applianceIp: 10.10.220.1
         cidr: 10.10.220.0/24
         id: '200'
-        vlanId: 200
         name: Mobile WiFi
         networkId: "{{ create_network.meraki_response.id }}"
         subnet: 10.10.220.0/24
@@ -68,7 +63,6 @@
         applianceIp: 10.10.230.1
         cidr: 10.10.230.0/24
         id: '300'
-        vlanId: 300
         name: Guest WiFi
         networkId: "{{ create_network.meraki_response.id }}"
         subnet: 10.10.230.0/24
